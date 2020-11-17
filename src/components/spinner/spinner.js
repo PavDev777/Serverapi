@@ -4,7 +4,7 @@ import './spinner.css'
 
 const Spinner = () => {
     return (
-        <div class="lds-hourglass"></div>
+        <div className="lds-hourglass"></div>
     )
 }
 
