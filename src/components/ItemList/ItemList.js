@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ServiceStar from '../../services/ApiService';
+import Spinner from '../spinner/spinner';
 
 import './ItemList.css';
 
@@ -8,45 +9,45 @@ export default class ItemList extends Component {
     ServiceStar = new ServiceStar()
 
     state = {
-        person: {}
+        personList: null
     }
 
-    constructor() {
-        super()
-        this.updatePerson()
+    componentDidMount() {
+        this.ServiceStar
+            .getAllPeople()
+            .then((personList) => {
+                this.setState({
+                    personList
+                })
+            })
     }
 
-    onPersonLoaded = (person) => {
-        this.setState({
-            person  
+    renderItems(arr) {
+        return arr.map((person) => {
+            return (
+                <li
+                    className="list-group-item"
+                    key={person.id}
+                    onClick={() => this.props.onItemSelected(person.id)}
+                >
+                    {person.name}
+                </li>
+            )
         })
     }
 
-
-    updatePerson() {
-        const id = Math.floor(Math.random() * 25) + 2
-        this.ServiceStar.getPerson(id)
-            .then(this.onPersonLoaded)
-            
-    }
-
-
-
     render() {
+        const { personList } = this.state
 
-        const {person: {name, gender}} = this.state
+        if (!personList) {
+            return <Spinner />
+        }
+
+        const items = this.renderItems(personList)
 
         return (
             <ul className="item-list list-group">
-                <li className="list-group-item">
-                    {name}
-        </li>
-                <li className="list-group-item">
-                    {gender}
-        </li>
-                <li className="list-group-item">
-                    R2-D2
-        </li>
+                {items}
             </ul>
         );
     }
