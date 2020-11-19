@@ -20,7 +20,6 @@ export default class RandomPlanet extends Component {
         setInterval(this.updatePlanet, 2500)
     }
 
-
     onPlanetLoaded = (planet) => {
         this.setState({
             planet,
@@ -43,10 +42,7 @@ export default class RandomPlanet extends Component {
     }
 
     render() {
-
-
         const { planet, loading, error } = this.state
-
         const hasData = !(loading || error)
 
         const errorMessage = error ? <ErrorIndicator /> : null
